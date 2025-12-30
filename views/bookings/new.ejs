@@ -1,0 +1,70 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-12">
+        <h3 class="mb-3">Book Your Stay</h3>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title"><%= listing.title %></h5>
+                <p class="card-text"><%= listing.description %></p>
+                <p class="card-text"><strong>Price:</strong> &#8377; <%= listing.price.toLocaleString("en-IN") %> / night</p>
+                <p class="card-text"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
+            </div>
+        </div>
+
+        <form action="/listings/<%= listing._id %>/book" method="POST" class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="checkIn" class="form-label">Check-in Date</label>
+                    <input type="date" class="form-control" id="checkIn" name="booking[checkIn]" required>
+                    <div class="invalid-feedback">Please select a check-in date.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="checkOut" class="form-label">Check-out Date</label>
+                    <input type="date" class="form-control" id="checkOut" name="booking[checkOut]" required>
+                    <div class="invalid-feedback">Please select a check-out date.</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="guests" class="form-label">Number of Guests</label>
+                <input type="number" class="form-control" id="guests" name="booking[guests]" min="1" max="10" value="1" required>
+                <div class="invalid-feedback">Please enter number of guests.</div>
+            </div>
+            <div class="mb-3">
+                <p><strong>Total Price:</strong> <span id="totalPrice">&#8377; 0</span></p>
+            </div>
+            <button type="submit" class="btn btn-success">Confirm Booking</button>
+            <a href="/listings/<%= listing._id %>" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<script>
+    const checkInInput = document.getElementById('checkIn');
+    const checkOutInput = document.getElementById('checkOut');
+    const guestsInput = document.getElementById('guests');
+    const totalPriceSpan = document.getElementById('totalPrice');
+    const pricePerNight = <%= listing.price %>;
+
+    function calculateTotal() {
+        const checkIn = new Date(checkInInput.value);
+        const checkOut = new Date(checkOutInput.value);
+        const guests = parseInt(guestsInput.value) || 1;
+
+        if (checkIn && checkOut && checkOut > checkIn) {
+            const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+            const total = nights * pricePerNight;
+            totalPriceSpan.textContent = '₹' + total.toLocaleString('en-IN');
+        } else {
+            totalPriceSpan.textContent = '₹0';
+        }
+    }
+
+    checkInInput.addEventListener('change', calculateTotal);
+    checkOutInput.addEventListener('change', calculateTotal);
+    guestsInput.addEventListener('change', calculateTotal);
+
+    // Set minimum dates
+    const today = new Date().toISOString().split('T')[0];
+    checkInInput.min = today;
+    checkOutInput.min = today;
+</script>

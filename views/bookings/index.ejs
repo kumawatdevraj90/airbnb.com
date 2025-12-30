@@ -1,0 +1,39 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-12">
+        <h3 class="mb-3">My Bookings</h3>
+        <% if (bookings.length === 0) { %>
+            <div class="alert alert-info">
+                <p>You have no bookings yet. <a href="/listings">Browse listings</a> to make your first booking!</p>
+            </div>
+        <% } else { %>
+            <div class="row">
+                <% bookings.forEach(booking => { %>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= booking.listing.title %></h5>
+                                <p class="card-text"><strong>Location:</strong> <%= booking.listing.location %>, <%= booking.listing.country %></p>
+                                <p class="card-text"><strong>Check-in:</strong> <%= booking.checkIn.toDateString() %></p>
+                                <p class="card-text"><strong>Check-out:</strong> <%= booking.checkOut.toDateString() %></p>
+                                <p class="card-text"><strong>Guests:</strong> <%= booking.guests %></p>
+                                <p class="card-text"><strong>Total Price:</strong> &#8377; <%= booking.totalPrice.toLocaleString("en-IN") %></p>
+                                <p class="card-text"><strong>Status:</strong>
+                                    <span class="badge bg-<%= booking.status === 'confirmed' ? 'success' : booking.status === 'cancelled' ? 'danger' : 'warning' %>">
+                                        <%= booking.status %>
+                                    </span>
+                                </p>
+                                <% if (booking.status === 'pending') { %>
+                                    <form action="/bookings/<%= booking._id %>?_method=DELETE" method="POST" class="d-inline">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel Booking</button>
+                                    </form>
+                                <% } %>
+                                <a href="/listings/<%= booking.listing._id %>" class="btn btn-primary btn-sm">View Listing</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<% if(locals.success && locals.success.length) { %>
+    <% locals.success.forEach(msg => { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }) %>
+<% } %>
+
+<% if(locals.error && locals.error.length) { %>
+    <% locals.error.forEach(msg => { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= msg %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }) %>
+<% } %>
