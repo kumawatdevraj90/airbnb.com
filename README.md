@@ -15,7 +15,7 @@ Before you begin, make sure you have the following installed on your system:
 1. Clone the Wanderlust repository from GitHub:
 
    ```
-   git clone https://github.com/gawandeabhishek/Wanderlust-Major-Project.git
+   git clone https://github.com/kumawatdevraj90/airbnb.com.git
    ```
 
 2. Set up the database:
@@ -26,18 +26,16 @@ Before you begin, make sure you have the following installed on your system:
      ATLASDB_URL=mongodb://127.0.0.1:27017/wanderlust
      ```
 
-3. Set up Cloudinary:
+3. Set up Cloudinary (optional):
    - Go to [Cloudinary](https://cloudinary.com/) and sign up for a free account.
    - Once logged in, obtain your Cloudinary `CLOUD_NAME`, `CLOUD_API_KEY`, and `CLOUD_API_SECRET`.
    - Add these values to the `.env` file:
 
-
-
-4. Set the secret for your Cloudinary storage:
+4. Set the secret for your session:
    - Add a `SECRET` key to your `.env` file and set it to a secure value:
 
      ```
-     SECRET=your_cloudinary_secret
+     SECRET=your_session_secret_key
      ```
 
 5. Install project dependencies using npm:
